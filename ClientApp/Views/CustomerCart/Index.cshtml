@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="container">
+    <div id="content">
+        <div id="cart">
+            <div id="cart-title">
+                <h3>SHOPPING CART</h3>
+            </div>
+            <div id="cart-content">
+                @foreach (var od in @ViewBag.orderDetails)
+                {
+                    <div class="cart-item">
+                        <div class="cart-item-infor">
+                            <div class="cart-item-img">
+                                <img src="/img/1.jpg" />
+                            </div>
+                            <div class="cart-item-name">
+                                <a href="detail.html?id=1">@od.Product.ProductName</a>
+                            </div>
+                            <div class="cart-item-price">
+                                @od.UnitPrice $
+                            </div>
+                            <div class="cart-item-button">
+                                <a href="/CustomerCartController/Add/c/@od.ProductId">Remove</a>
+                            </div>
+                        </div>
+                        <div class="cart-item-function">
+                            <a href="/CustomerCartController/Add/b/@od.ProductId">-</a>
+                            <a href="/CustomerCartController/Add/a/@od.ProductId">+</a>
+                            @od.Quantity
+                        </div>
+                    </div>
+                }
+                @{
+                    ViewData["Title"] = "Home Page";
+
+                    var ods = Accessor.HttpContext.Session.GetString("orderDetails");
+                    var totalOds = 0.0;
+                    if (!string.IsNullOrEmpty(ods))
+                    {
+                        List<OrderDetail> lst = JsonConvert.DeserializeObject<List<OrderDetail>>(ods);
+
+                        foreach (var a in lst)
+                        {
+                            totalOds += (float)a.Quantity * (float)a.UnitPrice * (1 - a.Discount);
+                        }
+                    }
+                }
+
+                <div id="cart-summary">
+                    <div id="cart-summary-content">Total amount: <span style="color:red">@totalOds $</span></div>
+                </div>
+                @using (Html.BeginForm("Order", "CustomerCart", FormMethod.Post))
+                {
+                    <div id="customer-info">
+                        <div id="customer-info-content">
+                            <h3>CUSTOMER INFORMATION:</h3>
+                            <div id="customer-info-detail">
+                                @if (string.IsNullOrEmpty(ViewBag.CompanyName))
+                                {
+                                    <div id="customer-info-left">
+                                        <input type="text" name="CompanyName" placeholder="Company name *" /><br />
+                                        <input type="text" name="ContactName" placeholder="Contact name *" /><br />
+                                    </div>
+                                    <div id="customer-info-right">
+                                        <input type="text" name="ContactTitle" placeholder="Contact title *" /><br />
+                                        <input type="text" name="Address" placeholder="Address *" /><br />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="customer-info-left">
+                                        <input type="text" name="CompanyName" disabled value="@ViewBag.CompanyName" placeholder="Company name *" /><br />
+                                        <input type="text" name="ContactName" disabled value="@ViewBag.ContactName" placeholder="Contact name *" /><br />
+                                    </div>
+                                    <div id="customer-info-right">
+                                        <input type="text" name="ContactTitle" disabled value="@ViewBag.ContactTitle" placeholder="Contact title *" /><br />
+                                        <input type="text" name="Address" disabled value="@ViewBag.Address" placeholder="Address *" /><br />
+                                    </div>
+                                }
+                                <div id="customer-info-left">
+                                    <input type="date" name="RequiredDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(4).ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="customer-info">
+                        <div id="customer-info-content">
+                            <h3>PAYMENT METHODS:</h3>
+                            <div id="customer-info-payment">
+                                <div>
+                                    <input type="radio" name="rbPaymentMethod" checked />
+                                    Payment C.O.D - Payment on delivery
+                                </div>
+                                <div>
+                                    <input type="radio" name="rbPaymentMethod" disabled />
+                                    Payment via online payment gateway
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="cart-order">
+                        <input type="submit" value="ORDER" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div id="footer">footer</div>
+    </div>

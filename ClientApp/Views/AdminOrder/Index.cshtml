@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="container">
+
+    <div id="content">
+
+        <div id="content-left">
+            <ul>
+                <a href="/AdminDashboard/Index">
+                <li>Dashboard</li></a>
+                <a href="/AdminOrder/Index">
+                <li>Orders</li></a>
+                <a href="/AdminProduct/Index">
+                <li>Products</li></a>
+                @* <a href="/AdminCustomer/Index">
+                <li>Customers</li></a>*@
+            </ul>
+        </div>
+        <div id="content-right">
+            <div class="path-admin">ORDERS LIST</b></div>
+            <div class="content-main">
+                <div id="content-main-dashboard">
+                    <div id="order-title">
+                        <b>Filter by Order date:</b>
+                        @using (Html.BeginForm("Filter", "AdminOrder", FormMethod.Get))
+                        {
+                            @ViewBag.from
+                            <div>
+                                From: <input type="date" name="from" value="@ViewBag.from" />
+                                To: <input type="date" name="to" value="@ViewBag.to" />
+                                <input style="height:44px " type="submit" value="Filter">
+                            </div>
+                        }
+                    </div>
+                    <div id="order-table">
+                        <table id="orders">
+                            <tr>
+                                <th>OrderID</th>
+                                <th>OrderDate</th>
+                                <th>RequiredDate</th>
+                                <th>ShippedDate</th>
+                                <th>Employee</th>
+                                <th>Customer</th>
+                                <th>Freight($)</th>
+                                <th>Status</th>
+                            </tr>
+                            @foreach (var order in ViewBag.listOrder)
+                            {
+                                <tr>
+                                    <td><a href="/AdminOrderDetail/Index/@order.OrderId">@order.OrderId</a></td>
+                                    <td>@order.OrderDate</td>
+                                    <td>@order.RequiredDate</td>
+                                    <td>@order.ShippedDate</td>
+                                    @if (order.Employee != null)
+                                    {
+                                        <td>@order.Employee.FirstName</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td>@order.Customer.ContactName</td>
+                                    <td>@order.Freight</td>
+                                    @if (@order.RequiredDate == null)
+                                    {
+                                        <td style="color: red;">Order canceled</td>
+                                    }
+                                    else if (@order.ShippedDate != null)
+                                    {
+                                        <td style="color: green;">Completed</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color: blue;">Pending | <a href="/AdminOrder/Cancel/@order.OrderId">Cancel</a></td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-admin">footer</div>
+</div>

@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="content">
+    <div id="content-left">
+        <h5 style="font-weight: normal;">Welcome, @Accessor.HttpContext.Session.GetString("email")</h5>
+        <h5>Account Management</h5>
+        <ul>
+            <a href="/CustomerProfile/Index">
+            <li>Personal information</li></a>
+        </ul>
+        <h5>My order</h5>
+        <ul>
+           <a href="/CustomerProfile/Order">
+            <li>All orders</li></a>
+            <a href="/CustomerProfile/Cancel">
+            <li>Canceled order</li></a>
+        </ul>
+    </div>
+    <div id="content-right">
+        <div class="path">LIST ORDERS</b></div>
+        <div class="content-main">
+            <div id="profile-content-order">
+                @foreach (var order in ViewBag.orders)
+                {
+                    <div>
+                        <div class="profile-order-title" style="height:70px">
+                            <div class="profile-order-title-left">
+                                <div>Order creation date: @order.OrderDate</div>
+                            </div>
+                            <div class="profile-order-title-right">
+
+                                    <span>Canceled</span>
+                            </div>
+                        </div>
+                        @foreach(var od in order.OrderDetails){
+                        <div class="profile-order-content">
+                            <div class="profile-order-content-col1">
+                                <a href="detail.html"><img src="/img/2.jpg" width="100%" /></a>
+                            </div>
+                            <div class="profile-order-content-col2">@od.Product.ProductName</div>
+                            <div class="profile-order-content-col3">Quantity: @od.Quantity</div>
+                            <div class="profile-order-content-col4">@od.UnitPrice $</div>
+                        </div>
+                        }
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="footer">footer</div>

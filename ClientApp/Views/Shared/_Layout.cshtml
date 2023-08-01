@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ClientApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ClientApp.styles.css" asp-append-version="true" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <script src="/js/chart.min.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div id="header">
+
+                <div id="banner" style="padding-top: 0px">
+                    @{
+                        ViewData["Title"] = "Home Page";
+
+                        var ods = Accessor.HttpContext.Session.GetString("orderDetails");
+                        var numOds = 0;
+                        if (!string.IsNullOrEmpty(ods))
+                        {
+                            numOds = JsonConvert.DeserializeObject<List<OrderDetail>>(ods).Count;
+                        }
+                    }
+                    @if (string.IsNullOrEmpty(Accessor.HttpContext.Session.GetString("token")))
+                    {
+
+                        <div id="logo">
+                            <a href="/CustomerProduct/Index"><img src="/img/logo.png" /></a>
+                        </div>
+
+                        <ul>
+                            <li><a href="/CustomerCart/Index">Cart: @numOds</a></li>
+                            <li><a href="/Auth/signin">SignIn</a></li>
+                            @*<li><a href="/Auth/signup">SignUp</a></li>*@
+                        </ul>
+                    }
+                    else
+                    {
+                        if (Accessor.HttpContext.Session.GetString("role").Equals("1"))
+                        {
+                            <div id="logo">
+                                <a href="/CustomerProduct/Index"><img src="/img/logo.png" /></a>
+                            </div>
+                            <ul>
+                                <li><a href="/CustomerCart/Index">Cart: @numOds</a></li>
+                                <li><a href="/CustomerProfile/Index">Profile</a></li>
+                                <li><a href="/Auth/signout">SignOut</a></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul>
+                                <li><a href="/Auth/signout">SignOut</a></li>
+                            </ul>
+                        }
+                    }
+                </div>
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

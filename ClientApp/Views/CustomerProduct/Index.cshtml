@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+@{
+    ViewData["Title"] = "Home Page";
+
+    var ods = Accessor.HttpContext.Session.GetString("orderDetails");
+    var numOds = 0;
+    if (!string.IsNullOrEmpty(ods))
+    {
+        numOds = JsonConvert.DeserializeObject<List<OrderDetail>>(ods).Count;
+    }
+}
+
+<div id="container">
+    
+    <div id="content">
+        <div id="content-left">
+            <h3>CATEGORY</h3>
+            <ul>
+                @foreach (var cate in ViewBag.listCate)
+                {
+                    <a href="/CustomerCate/@cate.CategoryId">
+                    <li>@cate.CategoryName</li></a>
+                }
+            </ul>
+        </div>
+        <div id="content-right">
+            <div class="path">Hot</b></div>
+            <div class="content-main">
+                @foreach (var hot in ViewBag.listHot)
+                {
+                    <div class="product">
+                        <a href="/CustomerProductDetail/@hot.ProductId"><img src="/img/1.jpg" width="100%" /></a>
+                        <div class="name"><a href="/CustomerProductDetail/@hot.ProductId">@hot.ProductName</a></div>
+                        <div class="price">$@hot.UnitPrice</div>
+                        <div><a href="/CustomerCart/BuyNow/@hot.ProductId">Buy now</a></div>
+                    </div>
+                }
+            </div>
+            <div class="path">Best Sale</b></div>
+            <div class="content-main">
+                @foreach (var sale in ViewBag.listSale)
+                {
+                    <div class="product">
+                        <a href="/CustomerProductDetail/@sale.ProductId"><img src="/img/1.jpg" width="100%" /></a>
+                        <div class="name"><a href="/CustomerProductDetail/@sale.ProductId">@sale.ProductName</a></div>
+                        <div class="price">$@sale.UnitPrice</div>
+                        <div><a href="/CustomerCart/BuyNow/@sale.ProductId">Buy now</a></div>
+                    </div>
+                }
+
+            </div>
+            <div class="path">New Product</b></div>
+            <div class="content-main">
+                @foreach (var news in ViewBag.listNew)
+                {
+                    <div class="product">
+                        <a href="/CustomerProductDetail/@news.ProductId"><img src="/img/1.jpg" width="100%" /></a>
+                        <div class="name"><a href="/CustomerProductDetail/@news.ProductId">@news.ProductName</a></div>
+                        <div class="price">$@news.UnitPrice</div>
+                        <div><a href="/CustomerCart/BuyNow/@news.ProductId">Buy now</a></div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div id="footer">footer</div>
+</div>

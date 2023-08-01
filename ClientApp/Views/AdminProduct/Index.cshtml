@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="container">
+
+    <div id="content">
+        <div id="content-left">
+            <ul>
+                <a href="/AdminDashboard/Index">
+                <li>Dashboard</li></a>
+                <a href="/AdminOrder/Index">
+                <li>Orders</li></a>
+                <a href="/AdminProduct/Index">
+                <li>Products</li></a>
+                @*<a href="/AdminCustomer/Index">
+                <li>Customers</li></a>*@
+            </ul>
+        </div>
+        <div id="content-right">
+            <div class="path-admin">PRODUCTS LIST</b></div>
+            <div class="content-main">
+                <div id="content-main-dashboard">
+                    <div id="product-title-header">
+                        @using (Html.BeginForm("Search_Filter", "AdminProduct", FormMethod.Get))
+                        {
+                            <div id="order-title">
+                                <select name="categoryId" id="categories">
+                                    <option value="-1" selected>---select all---</option>
+                                    @foreach (var category in ViewBag.listCategory)
+                                    {
+                                        if (category.CategoryId == ViewBag.categoryId)
+                                        {
+                                            <option value=@category.CategoryId selected>@category.CategoryName</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option value=@category.CategoryId>@category.CategoryName</option>
+
+                                        }
+                                    }
+                                </select>
+
+                                <input type="text" name="txtSearch" value="@ViewBag.txtSearch" placeholder="Enter product name to search" />
+
+                                <input type="submit" value="Search" />
+
+                            </div>
+                        }
+                        <div id="product-title-3">
+                            <a href="/AdminProduct/Add">Create a new Product</a>
+                        </div>
+                    </div>
+                    <div id="order-table-admin">
+                        <table id="orders">
+                            <tr>
+                                <th>ProductID</th>
+                                <th>ProductName</th>
+                                <th>UnitPrice</th>
+                                <th>Unit</th>
+                                <th>UnitsInStock</th>
+                                <th>Category</th>
+                                <th>Discontinued</th>
+                                <th></th>
+                            </tr>
+                            <tbody id="orders">
+                                @foreach (var p in ViewBag.listProduct)
+                                {
+                                    if (p.ProductId == ViewBag.editProductId)
+                                    {
+
+                                        @using (Html.BeginForm("Edit", "AdminProduct", FormMethod.Get))
+                                        {
+                                        <td> <input type="text" style="width:50px" readonly value="@p.ProductId" name="ProductId"></td>
+                                        <td><input type="text" style="width:200px" value="@p.ProductName" name="ProductName"></td>
+                                        <td><input type="text" style="width:90px" value="@p.UnitPrice" name="UnitPrice"></td>
+                                        <td><input type="text" style="width:130px" value="@p.QuantityPerUnit" name="QuantityPerUnit"></td>
+                                        <td><input type="text" style="width:70px" value="@p.UnitsInStock" name="UnitsInStock"></td>
+                                        <td><input type="text" style="width:70px" value="@p.CategoryId" name="CategoryId"></td>
+                                        <td><input type="text" style="width:70px" value="@p.Discontinued" name="Discontinued"></td>
+                                        <td>
+                                            <a href='javascript:void(0)' class=''><input type="submit" value="Edit" /></a>
+                                        </td>
+                                        }
+                                    }
+                                    else if (p.ProductName != null)
+                                    {
+                                    <tr>
+                                        <td>@p.ProductId</td>
+                                        <td>@p.ProductName</td>
+                                        <td>@p.UnitPrice</td>
+                                        <td>@p.QuantityPerUnit</td>
+                                        <td>@p.UnitsInStock</td>
+                                        <td>@p.CategoryId</td>
+                                        <td>@p.Discontinued</td>
+                                        <td>
+                                            <a href='/AdminProduct/Edit?id=@p.ProductId' class=''>Edit</a> &nbsp; | &nbsp;
+                                            <a href='/AdminProduct/Delete/@p.ProductId' class='delete'>Delete</a>
+                                        </td>
+                                    </tr>
+                                    }
+                                    else
+                                    {
+                                        @using (Html.BeginForm("Add", "AdminProduct", FormMethod.Get))
+                                        {
+                                        <td></td>
+                                        <td><input type="text" style="width:200px" name="ProductName"></td>
+                                        <td><input type="text" style="width:90px" name="UnitPrice"></td>
+                                        <td><input type="text" style="width:130px" name="QuantityPerUnit"></td>
+                                        <td><input type="text" style="width:70px" name="UnitsInStock"></td>
+                                        <td><input type="text" style="width:70px" name="CategoryId"></td>
+                                        <td><input type="text" style="width:70px" name="Discontinued"></td>
+                                        <td>
+                                            <a href='javascript:void(0)' class=''><input type="submit" value="Add" /></a>
+                                        </td>
+                                        }
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div id="paging">
+                        <div class="pagination">
+                            <a href="#">&laquo;</a>
+                            <a href="#">1</a>
+                            <a href="#" class="active">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#">5</a>
+                            <a href="#">6</a>
+                            <a href="#">&raquo;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-admin">footer</div>
+</div>

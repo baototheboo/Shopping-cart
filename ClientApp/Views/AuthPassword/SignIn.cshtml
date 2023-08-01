@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="container">
+
+    <div id="content">
+        <div id="form">
+            <div id="form-title">
+                <span><a href="signup">SIGN UP</a></span>
+                <span><a href="signin" style="color: red;">SIGN IN</a></span>
+            </div>
+            <div id="form-content">
+                @using (Html.BeginForm("signin", "repass", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <label>Email<span style="color: red;">*</span></label>
+
+                    <br />
+                    <input type="text" readonly value="@ViewBag.email" name="email"/>
+
+                    <br />
+                    @*<span class="msg-error">Email is required</span><br/>*@
+                    <label>Password<span style="color: red;">*</span></label>
+
+                    <br />
+                    <input type="password" name="password"/>
+
+                    <br />
+
+                    <label>Re-enter password<span style="color: red;">*</span></label>
+
+                    <br />
+                    <input type="password" name="rePassword"/>
+
+                    <br />
+                    @*<span class="msg-error">Password is required</span><br/>*@
+                    <div><a href="forgot.html">Forgot password?</a></div>
+                    <input type="submit" value="SIGN IN" />
+
+                    <br />
+                    @*<input type="button" value="FACEBOOK LOGIN" style="background-color: #3b5998;"/><br/>
+                <input type="button" value="ZALO LOGIN" style="background-color: #009dff;margin-bottom: 30px;"/>*@
+                }
+            </div>
+        </div>
+    </div>
+    <div id="footer">footer</div>
+</div>

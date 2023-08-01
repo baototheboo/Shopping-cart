@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="container">
+    <div id="content">
+        <div id="content-left">
+            <h3>CATEGORY</h3>
+            <ul>
+                @foreach (var cate in ViewBag.listCate)
+                {
+                    <a href="/CustomerCate/@cate.CategoryId">
+                    <li>@cate.CategoryName</li></a>
+                }
+            </ul>
+        </div>
+        <div id="content-right">
+            <div class="path">@ViewBag.category.CategoryName</b></div>
+            <div class="content-main">
+                @foreach (var hot in ViewBag.listProduct)
+                {
+                    <div class="product">
+                        <a href="/CustomerProductDetail/@hot.ProductId"><img src="/img/1.jpg" width="100%" /></a>
+                        <div class="name"><a href="/CustomerProductDetail/@hot.ProductId">@hot.ProductName</a></div>
+                        <div class="price">$@hot.UnitPrice</div>
+                        <div><a href="/CustomerCart/BuyNow/@hot.ProductId">Buy now</a></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="footer">footer</div>
+</div>

@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="container">
+
+    <div id="content">
+
+        <div id="content-left">
+            <ul>
+                <a href="/AdminDashboard/Index">
+                <li>Dashboard</li></a>
+                <a href="/AdminOrder/Index">
+                <li>Orders</li></a>
+                <a href="/AdminProduct/Index">
+                <li>Products</li></a>
+                @*<a href="/AdminCustomer/Index">
+                <li>Customers</li></a>*@
+            </ul>
+        </div>
+        <div id="content-right">
+            <div class="path-admin">ORDER DETAIL</b></div>
+            <div class="content-main">
+                <div id="content-main-dashboard">
+                    <div>
+                        <div class="profile-order-title" style="height:70px">
+                            <div class="profile-order-title-left">
+                                <div>OrderID: #@ViewBag.order.OrderId</div>
+                                <div>Order creation date: @ViewBag.order.OrderDate</div>
+                            </div>
+                            <div class="profile-order-title-right">
+                                @if (ViewBag.order.Canceled == true)
+                                {
+                                    <span style="color: red;">Canceled</span>
+                                }else if(ViewBag.order.ShippedDate == null)
+                                {
+                                     <span style="color: blue;">Pending</span>
+                                }else{
+                                    <span style="color: green;">Completed</span>
+                                }
+                            </div>
+                        </div>
+                        @foreach(var od in ViewBag.listOrderDetail){
+                        <div class="profile-order-content" style="background-color: white;">
+                            <div class="profile-order-content-col1">
+                                <a href="detail.html"><img src="/img/2.jpg" width="100%" /></a>
+                            </div>
+                            <div class="profile-order-content-col2">@od.Product.ProductName</div>
+                            <div class="profile-order-content-col3">Quantity: @od.Quantity</div>
+                            <div class="profile-order-content-col4">@od.UnitPrice $</div>
+                        </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-admin">footer</div>
+</div>

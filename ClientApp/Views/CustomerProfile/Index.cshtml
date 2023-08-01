@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor Accessor
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="content">
+    <div id="content-left">
+        <h5 style="font-weight: normal;">Welcome, @ViewBag.ContactTitle @ViewBag.ContactName</h5>
+        <h5>Account Management</h5>
+        <ul>
+            <a href="/CustomerProfile/Index">
+            <li>Personal information</li></a>
+        </ul>
+        <h5>My order</h5>
+        <ul>
+            <a href="/CustomerProfile/Order">
+            <li>All orders</li></a>
+            <a href="/CustomerProfile/Cancel">
+            <li>Canceled order</li></a>
+        </ul>
+    </div>
+    <div id="content-right">
+        @using (Html.BeginForm("Edit", "CustomerProfile", FormMethod.Post))
+        {
+            <div class="path">Personal information</div>
+
+            <div class="content-main">
+                <div id="profile-content">
+                    <div class="profile-content-col">
+                        <div>Company name: <br /><input name="CompanyName" value=@ViewBag.CompanyName></div>
+                        <div>Contact name: <br /><input name="ContactName" value=@ViewBag.ContactName></div>
+                        <div>
+                            <div style="color: green">@ViewBag.message</div>
+                            <div style="color: red">@ViewBag.error</div>
+                            <input type="submit" value="Edit info" />
+                        </div>
+                    </div>
+                    <div class="profile-content-col">
+                        <div>Contact title: <br /><input name="ContactTitle" value=@ViewBag.ContactTitle></div>
+                        <div>Address: <br /><input name="Address" value=@ViewBag.Address></div>
+                    </div>
+                    <div class="profile-content-col">
+                        <div>Email: <br /><input name="Email" value=@Accessor.HttpContext.Session.GetString("email")></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+<div id="footer">footer</div>
